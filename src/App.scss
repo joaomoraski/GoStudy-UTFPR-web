@@ -1,0 +1,12 @@
+.flexContainer{
+    display: flex;
+}
+
+.alignCenter{
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-color: yellow;
+    
+}
