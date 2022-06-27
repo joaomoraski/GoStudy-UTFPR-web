@@ -1,10 +1,9 @@
+import { useState, useEffect } from "react";
 import { Box, Text, Grid, GridItem, Flex, Center, Button } from "@chakra-ui/react"
 import { BsCheckCircle, BsXCircle} from "react-icons/bs";
 import { MdCheckCircleOutline } from "react-icons/md";
-
-
-
-
+import getSchedules from "../../services/schedule/getSchedules";
+import useUser from "../../hooks/useUser";
 
 const Horarios = [
     {
@@ -81,8 +80,7 @@ const Horarios = [
       horario: "20:00",
       isReservado: true
      
-    },
-    
+    }
   ]
   function reservado(horario) {
 
@@ -93,7 +91,7 @@ const Horarios = [
         <Flex>
         <BsXCircle color="red" />
         <Text marginLeft={2} marginTop={-0.5} fontSize='16px'>
-            {horario.horario}
+            {horario.label}
         </Text>
         </Flex>
          
@@ -119,14 +117,28 @@ const Horarios = [
 }
 
   export default function horarios() {
+    const [horarios, setHorarios] = useState([]);
+    const { user } = useUser();
+    useEffect(
+      ()=>{
+        (async ()=>{
+          const response = await getSchedules({token: user.token});
+          if(response.status == 'success'){
+            setHorarios(response.data)
+          }
+        })()
+      },[]
+    )
+
     return(
         <Box borderRadius={'5px'} 
             p={6} bgColor={'#FFFFFF'}
            maxWidth={'1200px'} width={"100%"}>
             <Grid templateColumns='repeat(6, 1fr)' rowGap={3} >
-              {Horarios.map((horario, index) => (
+
+              {horarios.map((horario, index) => (
                 <GridItem>
-                    { horario.isReservado?
+                    { horario?
                         reservado(horario)
                         :
                         livre(horario)

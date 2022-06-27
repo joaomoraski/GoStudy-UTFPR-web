@@ -1,8 +1,17 @@
 import { Box, Flex,Grid,GridItem,Text, Button } from "@chakra-ui/react"
 import Header from '../components/Header'
-import Salas from "../components/RoomPage/Salas/index"
+import ReservationContainer from "../components/RoomPage/ReservationContainer"
 import Retornar from "../components/RoomPage/Retornar"
-export default function Home() {
+import {parseCookies} from 'nookies'
+import getAllReservation from "../services/reservation/getAllReservation"
+import { useEffect, useState } from "react"
+import useUser from "../hooks/useUser"
+import useReservation from "../hooks/useReservation"
+
+export default function Rooms() {
+    const { reservations} = useReservation();
+    const { user } = useUser();
+    
     return (
         <Box bgColor={"#EEEDEA"} width={'100%'} height={'100vh'}>
           <Header/>
@@ -10,10 +19,24 @@ export default function Home() {
             <Retornar/>
           </Box>
           <Box p={4} display = {"flex"} alignItems={"center"} justifyContent = {"center"}>
-            <Salas/>
+            <ReservationContainer/>
           </Box>
         </Box>  
-        
     )
+  }
+  
+  export const getServerSideProps = async (ctx) => {
+    const { 'gostudy-token': token } = parseCookies(ctx);
+    if (!token) {
+      return {
+        redirect: {
+          destination: '/signin',
+          permanent: false,
+        }
+      }
+    }
+    return {
+      props: {}
+    }
   }
   

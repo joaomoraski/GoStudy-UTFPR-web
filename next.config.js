@@ -1,6 +1,5 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
+module.exports = {
+  env: {
+    URL_SERVER: 'http://localhost:3001'
+  }
 }
-
-module.exports = nextConfig

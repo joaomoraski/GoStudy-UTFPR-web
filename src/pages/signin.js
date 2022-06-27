@@ -1,9 +1,11 @@
+import {parseCookies} from 'nookies'
 import { Box, useColorMode,Text,Image, Flex } from "@chakra-ui/react"
 import { useState } from "react";
 import LoginForm from '../components/SigninPage/LoginForm'
 import CadastroForm from '../components/SigninPage/CadastroForm'
-
+import useUser from "../hooks/useUser";
 export default function Signin() {
+
     const { colorMode } = useColorMode();
     const brandColor = {light: 'brand.900',dark: 'brand.700'};
     const [ isLogin, setIsLogin ] = useState(true);
@@ -19,8 +21,8 @@ export default function Signin() {
         bgRepeat="no-repeat"
         padding="0"
         bgSize="cover"
-        bgImage={'/background.png'}>   
-            <Box borderRadius={'10px'} bg={'white'} height="360px"  width={'360px'}>
+        bgImage={'/background.png'}>  
+            <Box borderRadius={'10px'} bg={'white'} height="max-content"  width={'360px'}>
                 <Flex cursor={'pointer'} width={"100%"}>
                     <Text  onClick={()=>setIsLogin(true)}
                      bg={isLogin?"":"#D9D8D2"} textAlign={'center'} width={"50%"}  p={2}
@@ -54,4 +56,19 @@ export default function Signin() {
         </Flex>    
     )
   }
+
+export const getServerSideProps = async (ctx) => {
+    const { 'gostudy-token': token } = parseCookies(ctx)
+        if (token) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                }
+            }
+        }
+        return {
+            props: {}
+        }
+    }
   

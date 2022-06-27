@@ -13,7 +13,7 @@ export default function Retornar() {
         maxWidth={'1150px'}  width={"100%"} maxHeight={'400px'} height={'100%'}  justifyContent={'center'} alignItems={'center'} alignContent={'center'}>
             <Box display={'flex'} justifyContent={'center'} >   
                     <Box margin={5} >
-                    <Text>RA ou E-mail do usuário</Text>
+                    <Text>RA Aluno</Text>
                     <Input size='md' borderColor={"gray.400"} />         
                     </Box> 
 

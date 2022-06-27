@@ -4,22 +4,36 @@ import { Spacer } from '@chakra-ui/react'
 import { Select } from '@chakra-ui/react'
 import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
 import { raw } from "next/dist/build/webpack/loaders/next-middleware-wasm-loader"
+import { useEffect, useState } from "react"
+import useUser from "../../hooks/useUser"
+import getAllInstitutes from "../../services/institute/getAllInstitutes"
 
+export default function InputsUsuarios({
+    institute, setInstitute,
+    telephone, setTelephone,
+    name, setName,
+    email, setEmail,
+    password, setPassword,
+    ra,setRa,
+    isAdmin,setIsAdmin
+}) {
+    const {user} = useUser();
+    const [institutes, setInstitutes] = useState([]);
 
-function handleChange(e) {
-    let isChecked = e.target.checked;
-    if (isChecked) {
-        document.getElementById("RA").disabled = true;
-        document.getElementById("RA").style.backgroundColor = "gray";
-    } else {
-        document.getElementById("RA").disabled = false;
-        document.getElementById("RA").style.backgroundColor = "white";
-    }
-
-  }
-
-
-export default function Retornar() {
+    useEffect(
+        ()=>{
+            (async ()=>{
+                if(user?.token){
+                    const response = await getAllInstitutes({token: user.token});
+                    if(response.status == 'success'){
+                        setInstitutes(response.data)
+                    }
+                }
+                
+            })()
+        },[user]
+    )
+    
     return(
         <Box borderRadius={'5px'} borderWidth={'1px'}
         borderColor={'#b2b2b2'} p={10} bgColor={'#FFFFFF'}
@@ -28,43 +42,51 @@ export default function Retornar() {
                 
                     <Box margin={5} minWidth={220} >
                     <Text>Instituição</Text>
-                        <Select placeholder='Selecione' borderColor={"gray.400"}>
-                            <option value='option1'>UTFPR-CM</option>
-                            <option value='option2'>UTFPR-CT</option>
+                        <Select value={institute} onChange={(e)=>setInstitute(e.target.value)} placeholder='Selecione' borderColor={"gray.400"}>
+                            {institutes.map(
+                                (i)=><option value={i?.id}>{i?.name}</option>
+                            )}
                         </Select>  
                     </Box>  
                 
                 
                     <Box margin={5}>
                         <Text>Nome</Text>
-                        <Input size='md' type={"text"} borderColor={"gray.400"} />         
+                        <Input value={name} onChange={(e)=>setName(e.target.value)}
+                         size='md' type={"text"} borderColor={"gray.400"} />         
                     </Box>  
                 
                 
                     <Box margin={5}>
                         <Text>Telefone</Text>
-                        <Input size='md' type={"tel"} borderColor={"gray.400"} />         
+                        <Input  value={telephone} onChange={(e)=>setTelephone(e.target.value)}
+                         size='md' type={"tel"} borderColor={"gray.400"} />         
                     </Box>  
                
             </Box> 
             <Box display={'flex'} justifyContent={'center'} >   
                     <Box margin={5}>
                         <Text>E-mail</Text>
-                        <Input size='md' type={"email"} borderColor={"gray.400"}  />         
+                        <Input value={email} onChange={(e)=>setEmail(e.target.value)}
+                        size='md' type={"email"} borderColor={"gray.400"}  />         
                     </Box>  
                 
                 
                     <Box margin={5}>
                         <Text>Senha</Text>
-                        <Input size='md' type={"password"} borderColor={"gray.400"}  />         
+                        <Input value={password} onChange={(e)=>setPassword(e.target.value)}
+                        size='md' type={"password"} borderColor={"gray.400"}  />         
                     </Box>   
                     <Box margin={5}>
                         <Text>RA</Text>
-                        <Input size='md' name='RA' id="RA" borderColor={"gray.400"}  />         
+                        <Input  disabled={isAdmin}
+                        value={ra} onChange={(e)=>setRa(e.target.value)}
+                        size='md' name='RA' id="RA" borderColor={"gray.400"}  />         
                     </Box>  
             </Box> 
             <Box display={'flex'} justifyContent={'center'} marginTop={10}>   
-                <Checkbox size='lg' name="check" onChange={e => handleChange(e)}>Usuário administrador</Checkbox>           
+                <Checkbox value={isAdmin} isChecked={isAdmin} onChange={e =>setIsAdmin(!isAdmin)}
+                 size='lg' name="check" >Usuário administrador</Checkbox>
             </Box> 
         </Box>
     )
