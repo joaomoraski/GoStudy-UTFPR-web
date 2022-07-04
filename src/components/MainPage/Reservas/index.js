@@ -7,6 +7,7 @@ import getOneRoom from '../../../services/room/getOneRoom'
 import deleteReservation from "../../../services/reservation/deleteReservation";
 import useUser from "../../../hooks/useUser";
 import {IoIosCloseCircle} from 'react-icons/io'
+import useReservation from '../../../hooks/useReservation'
 export default function Reservas() {
   let date = new Date;
   var day = date.getDate();
@@ -14,8 +15,7 @@ export default function Reservas() {
   var year = date.getFullYear();
   if (month < 10) month = "0" + month;
   if (day < 10) day = "0" + day;
-
-    const [reservas, setReservas] = useState([]);
+    const {reservas, setReservas} = useReservation()
     const { user } = useUser();
     const toast = useToast();
     useEffect(
@@ -23,7 +23,6 @@ export default function Reservas() {
         (async ()=>{
           if(user.token){
             const response = await ShowReservationsAfterDate({token:user.token, reservationDate:`${day}-${month}-${year}`})
-            console.log(response)
             if(response.status == 'success'){
               setReservas(response.data.filter((reserva)=>reserva.user.id == user.id))
 
@@ -52,7 +51,6 @@ export default function Reservas() {
         (async ()=>{
           if(user.token){
             const response = await ShowReservationsAfterDate({token:user.token, reservationDate:`${day}-${month}-${year}`})
-            console.log(response)
             if(response.status == 'success'){
               setReservas(response.data.filter((reserva)=>reserva.user.id == user.id))
             }
@@ -92,7 +90,7 @@ export default function Reservas() {
                       </Text>
                     </Flex>
                     <Text fontSize='14px'>
-                      {reserva.reservationDate}
+                      {reserva.reservationDate.toString().split("-").reverse().join("/")}
                     </Text>
                   </Box>
                   <Text onClick={()=>deletarReserva(reserva.id)} 

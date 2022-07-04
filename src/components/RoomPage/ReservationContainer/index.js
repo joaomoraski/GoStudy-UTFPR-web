@@ -6,7 +6,6 @@ import Horarios from "./horarios"
 import {Spacer, useToast } from '@chakra-ui/react'
 import { BsCheckCircle, BsXCircle} from "react-icons/bs";
 import {MdCheckCircleOutline} from 'react-icons/md'
-import useReservation from '../../../hooks/useReservation'
 import { useEffect, useState } from "react"
 import getAllRooms from "../../../services/room/getAllRooms"
 import useUser from "../../../hooks/useUser"
@@ -19,7 +18,6 @@ export default function ReservationContainer() {
     const { user } = useUser();
     const toast = useToast();
     const router = useRouter()
-    const {reservations, filteredReservations,getRoomsReservations} = useReservation();
     const [rooms, setRooms] = useState([]);
     const [selectedRoom, setSelectedRoom ] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
@@ -40,8 +38,10 @@ export default function ReservationContainer() {
                 const response = await getAllRooms({token: user?.token});
                 
                 if(response.status == "success"){
+                    if(response.data[0]){
+                        setSelectedRoom(response.data[0].id)
+                    }
                   setRooms(response.data);
-                  setSelectedRoom(response.data[0].id)
                   setSelectedDate(`${year}-${month}-${day}`)
                 }
               }
@@ -57,10 +57,8 @@ export default function ReservationContainer() {
 
     async function getReservations( ){
         if(selectedRoom && selectedDate){
-        //    getRoomsReservations({idRoom:selectedRoom,date:selectedDate});
             const response = await ShowReservationRoomDate({token:user?.token, idRoom:selectedRoom, reservationDate: selectedDate});
             if(response.status == "success"){ 
-                console.log(response.data)  
                 setSchedules(response.data)
             }
         }

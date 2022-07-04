@@ -6,10 +6,8 @@ import {parseCookies} from 'nookies'
 import getAllReservation from "../services/reservation/getAllReservation"
 import { useEffect, useState } from "react"
 import useUser from "../hooks/useUser"
-import useReservation from "../hooks/useReservation"
 
 export default function Rooms() {
-    const { reservations} = useReservation();
     const { user } = useUser();
     
     return (

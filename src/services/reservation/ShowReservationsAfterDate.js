@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function ({ token, idRoom, reservationDate}) {
   const config = {
     method: "get",
-    url: `${process.env.URL_SERVER}/reservation/filter/afterDate/${idRoom}&${reservationDate}`,
+    url: `${process.env.URL_SERVER}/reservation/filter/afterDate/${reservationDate}`,
     headers: {
       Authorization: token,
     },

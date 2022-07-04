@@ -44,7 +44,7 @@ export default function InputsSalas({
                     </Box>  
                     <Box margin={5} >
                     <Text>Número da sala</Text>
-                    <Input value={number} onChange={(e)=>setNumber(e.target.value)}
+                    <Input type='number' value={number} onChange={(e)=>setNumber(e.target.value)}
                     size='md' borderColor={"gray.400"} />         
                     </Box>  
             </Box> 

@@ -55,7 +55,6 @@ export function UserProvider({children}){
     async function signin({email,ra, password}){
         setIsLoadingAuth(true)
         const response = await auth({email,ra, password});
-        console.log(response);
         if(response){
             toast({
                 title: response.message,

@@ -3,9 +3,10 @@ import { router } from 'next'
 import useUser from "../../../hooks/useUser"
 import { useEffect, useState } from "react"
 import ShowReservationsAfterDate from '../../../services/reservation/ShowReservationsAfterDate'
+import useReservation from "../../../hooks/useReservation"
 export default function Informacoes() {
   const {signout, user } = useUser();
-  const [reservas, setReservas] = useState();
+  const {reservas, setReservas} = useReservation();
 
   useEffect(
     ()=>{
@@ -18,7 +19,6 @@ export default function Informacoes() {
       (async ()=>{
         if(user.token){
           const response = await ShowReservationsAfterDate({token:user.token, reservationDate:`${day}-${month}-${year}`})
-          console.log(response)
           if(response.status == 'success'){
             setReservas(response.data.filter((reserva)=>reserva.user.id == user.id))
 

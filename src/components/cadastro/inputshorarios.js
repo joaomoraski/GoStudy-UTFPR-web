@@ -17,7 +17,7 @@ export default function InputsHorarios(
                     <Box margin={5} >
                     <Text>Nome do horário</Text>
                     <Input value={label} onChange={(e)=>setLabel(e.target.value)}
-                    size='md' type={'text'} borderColor={"gray.400"} />         
+                        size='md' type={'text'} borderColor={"gray.400"}/>         
                     </Box>  
 
                     <Box margin={5} >

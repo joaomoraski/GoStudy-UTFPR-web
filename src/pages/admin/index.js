@@ -23,45 +23,30 @@ export default function Admin() {
                     >
                         <Flex mt={2} flexDir={'column'} alignItems={'center'} width='100%'>
                             <Flex 
-                            justifyContent={'center'}
-                            fontSize={'22'}
-                            p={2} 
-                            bg={"#E6E6E6"} 
-                            width={'80%'}
-                            mt={2}
-                            mb={2}
-                            cursor={'pointer'}
-                            onClick={()=>router.push('/admin/campus')}
-                            >
+                                justifyContent={'center'} fontSize={'22'} p={2} bg={"#E6E6E6"} 
+                                width={'80%'} mt={2} mb={2}
+                                cursor={'pointer'} onClick={()=>router.push('/admin/campus')}>
                                 <Text>Câmpus</Text>
                             </Flex>
 
                             <Flex 
-                            justifyContent={'center'}
-                            fontSize={'22'}
-                            p={2} 
-                            bg={"#E6E6E6"} 
-                            width={'80%'}
-                            mt={2}
-                            mb={2}
-                            cursor={'pointer'}
-                            onClick={()=>router.push('/admin/salas')}
-                            >
+                                justifyContent={'center'} fontSize={'22'} p={2} 
+                                bg={"#E6E6E6"} width={'80%'} mt={2} mb={2} cursor={'pointer'}
+                                onClick={()=>router.push('/admin/salas')}>
                                 <Text>Salas</Text>
                             </Flex>
                             <Flex 
-                            justifyContent={'center'}
-                            fontSize={'22'}
-                            p={2} 
-                            bg={"#E6E6E6"} 
-                            width={'80%'}
-                            mt={2}
-                            mb={2}
-                            cursor={'pointer'}
-                            onClick={()=>router.push('/admin/usuarios')}
-                            >
+                                justifyContent={'center'} fontSize={'22'} p={2} bg={"#E6E6E6"} 
+                                width={'80%'} mt={2} mb={2}
+                                cursor={'pointer'} onClick={()=>router.push('/admin/usuarios')}>
                                 <Text>Usuários</Text>
-                            </Flex>  
+                            </Flex>
+                            {/* <Flex 
+                                justifyContent={'center'} fontSize={'22'} p={2} bg={"#E6E6E6"} 
+                                width={'80%'} mt={2} mb={2}
+                                cursor={'pointer'} onClick={()=>router.push('/admin/schedules')}>
+                                <Text>Horários</Text>
+                            </Flex> */}
                         </Flex>
                         
                     </Flex>

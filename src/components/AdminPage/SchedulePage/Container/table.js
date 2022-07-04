@@ -15,13 +15,13 @@ import React, { useState } from "react";
 import Pagination from '../../Pagination'
 import { useRouter } from 'next/router'
 import useUser from "../../../../hooks/useUser"
-import deleteInstituteService from '../../../../services/institute/deleteInstitute'
-import getAllInstitutes from '../../../../services/institute/getAllInstitutes';
+import deleteScheduleService from '../../../../services/schedule/deleteSchedule'
+import getAllSchedules from '../../../../services/schedule/getSchedules';
 import ConfirmModal from "../../../../components/ConfirmModal"
 
 const max_itens = 3;
 const max_left = (max_itens -1)/2;
-export default function ContainerCampus({campusList, setInstitutes}){
+export default function TableSchedules({schedulesList, setSchedules}){
     const [offset, setoffset] = useState(0);
     const [deleteIndex, setDeleteIndex] = useState(null);
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -29,8 +29,8 @@ export default function ContainerCampus({campusList, setInstitutes}){
     const {user} = useUser();
     const router = useRouter();
 
-    async function deleteInstitute({id}) {
-        const response = await deleteInstituteService({
+    async function deleteSchedule({id}) {
+        const response = await deleteScheduleService({
             token:user?.token,
             id: id,
         })
@@ -49,9 +49,9 @@ export default function ContainerCampus({campusList, setInstitutes}){
             if(response.status == "success"){
                 (async ()=>{
                     if(user?.token){
-                        const response = await getAllInstitutes({token: user.token});
+                        const response = await getAllSchedules({token: user.token});
                         if(response.status == 'success'){
-                            setInstitutes(response.data)
+                            setSchedules(response.data)
                         }
                     } 
                 })()
@@ -66,39 +66,35 @@ export default function ContainerCampus({campusList, setInstitutes}){
             <Thead>
                 <Tr>
                 <Th isNumeric backgroundColor={"#DEEEFF"}>Id</Th>
-                <Th backgroundColor={"#DEEEFF"}>Campus</Th>
-                <Th backgroundColor={"#DEEEFF"}>Cidade</Th>
-                <Th backgroundColor={"#DEEEFF"}>Telefone</Th>
-                <Th backgroundColor={"#DEEEFF"}>Abertura</Th>
-                <Th backgroundColor={"#DEEEFF"}>Fechamento</Th>
-                <Th backgroundColor={"#DEEEFF"}>Acão</Th>
+                <Th backgroundColor={"#DEEEFF"}>Label</Th>
+                <Th backgroundColor={"#DEEEFF"}>Horário inicial</Th>
+                <Th backgroundColor={"#DEEEFF"}>Horário final</Th>
+                <Th backgroundColor={"#DEEEFF"}>Ações</Th>
                 </Tr>
             </Thead>
             <Tbody>
-            {campusList?.slice(offset,offset+5).map((campus) => ( 
+            {schedulesList?.slice(offset,offset+5).map((schedule) => ( 
                         <Tr>
-                            <Td isNumeric>{campus.id}</Td>
-                            <Td>{campus.name}</Td>
-                            <Td>{campus.city}</Td>
-                            <Td>{campus.telephone}</Td>
-                            <Td>{campus.openingTime}</Td>
-                            <Td>{campus.closingTime}</Td>
+                            <Td isNumeric>{schedule.id}</Td>
+                            <Td>{schedule.label}</Td>
+                            <Td>{schedule.initial_time}</Td>
+                            <Td>{schedule.final_time}</Td>
                             <td>
                                 <Button 
-                                        onClick={()=>router.push(`/admin/campus/editar?id=${campus.id}`)} 
+                                       onClick={()=>router.push(`/admin/schedules/editar?id=${schedule.id}`)} 
                                         variant='ghost' colorScheme='none' border={'Background'} 
                                         alignContent={'center'} justifyContent={'center'}  
                                         marginRight={1} padding={0}>{<BsFillPencilFill />}</Button>
                                 <Button 
-                                        onClick={()=>{setDeleteIndex(campus.id), setIsOpenModal(true)}} 
-                                        variant='ghost' isDisabled={campus.id === user.fk_id_institute}
+                                        onClick={()=>{setDeleteIndex(schedule.id), setIsOpenModal(true)}} 
+                                        variant='ghost' 
                                         colorScheme='none' padding={-1}>{<BsFillTrashFill/>}</Button>
                             </td>
                         </Tr> 
                 ))}
                 <ConfirmModal 
-                    message={"Deseja mesmo excluir essa instituição?"} 
-                    confirmAction={() => deleteInstitute({id: deleteIndex})}
+                    message={"Deseja mesmo excluir esse horário?"} 
+                    confirmAction={() => deleteSchedule({id: deleteIndex})}
                     isOpen={isOpenModal} setIsOpen={setIsOpenModal}
                 />
             </Tbody>
@@ -106,7 +102,7 @@ export default function ContainerCampus({campusList, setInstitutes}){
         </TableContainer>
         <Pagination 
             limit={5} 
-            total={campusList?.length} 
+            total={schedulesList?.length} 
             offset={offset}
             setoffset={setoffset}
         />
