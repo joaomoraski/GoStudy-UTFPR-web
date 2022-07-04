@@ -90,7 +90,7 @@ export default function Reservas() {
                       </Text>
                     </Flex>
                     <Text fontSize='14px'>
-                      {reserva.reservationDate}
+                      {reserva.reservationDate.toString().split("-").reverse().join("/")}
                     </Text>
                   </Box>
                   <Text onClick={()=>deletarReserva(reserva.id)} 
